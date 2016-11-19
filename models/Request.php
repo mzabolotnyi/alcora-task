@@ -152,6 +152,17 @@ class Request extends ActiveRecord
      */
     protected function getRequestInfo()
     {
-        return 'test mail';
+        $valuesRentEquipment = $this->getAllowedValuesRentEquipment();
+        $valuesEnglishLevel = $this->getAllowedValuesEnglishLevel();
+
+        return "Информация о заявке\n\n"
+        . "Имя: $this->name\n"
+        . "E-mail: $this->email\n"
+        . "Возраст (лет): $this->age\n"
+        . "Рост: $this->height см\n"
+        . "Вес: $this->weight кг\n"
+        . "Город: $this->city\n"
+        . "Нужна ли техника в аренду: " . $valuesRentEquipment[$this->rent_equipment] . "\n"
+        . "Уровень английского: " . $valuesEnglishLevel[$this->english_level];
     }
 }

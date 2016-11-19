@@ -37,7 +37,7 @@ $this->title = 'Подать заявку';
 
         <h3>
             <?= Html::encode($this->title) ?>
-            <small>Все поля обязательны для заполнения. Заявка приходит E-mail</small>
+            <small>Все поля обязательны для заполнения. Заявка приходит на E-mail</small>
         </h3>
 
         <div class="card">
