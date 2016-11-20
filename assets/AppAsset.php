@@ -20,8 +20,10 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/font-awesome.min.css',
+        'css/magnific-popup.css',
     ];
     public $js = [
+        'js/jquery.magnific-popup.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

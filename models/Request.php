@@ -44,6 +44,17 @@ class Request extends ActiveRecord
     /**
      * @inheritdoc
      */
+    public function init()
+    {
+        parent::init();
+
+        $this->rent_equipment = 0;
+        $this->english_level = 0;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -121,6 +132,24 @@ class Request extends ActiveRecord
     }
 
     /**
+     * Binds photo urls to request
+     * @param $photos
+     */
+    public function bindPhotos($photos)
+    {
+        if (!is_array($photos)){
+            return;
+        }
+
+        foreach ($photos as $photoUrl){
+            $model = new RequestPhoto();
+            $model->request_id = $this->id;
+            $model->url = $photoUrl;
+            $model->save();
+        }
+    }
+
+    /**
      * Sends request info to user email
      */
     protected function sendToUser()
@@ -164,5 +193,13 @@ class Request extends ActiveRecord
         . "Город: $this->city\n"
         . "Нужна ли техника в аренду: " . $valuesRentEquipment[$this->rent_equipment] . "\n"
         . "Уровень английского: " . $valuesEnglishLevel[$this->english_level];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPhotos()
+    {
+        return $this->hasMany(RequestPhoto::className(), ['request_id' => 'id']);
     }
 }

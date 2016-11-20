@@ -2,12 +2,17 @@
 
 namespace app\controllers;
 
+use app\models\AjaxFilter;
+use app\models\UploadForm;
 use Yii;
+use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\Request;
+use yii\web\ServerErrorHttpException;
+use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
@@ -28,10 +33,18 @@ class SiteController extends Controller
                     ],
                 ],
             ],
+            'ajax' => [
+                'class' => AjaxFilter::className(),
+                'actions' => [
+                    'upload-files' => '',
+                    'delete-file' => '',
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'upload-files' => ['post'],
+                    'delete-file' => ['post'],
                 ],
             ],
         ];
@@ -51,7 +64,6 @@ class SiteController extends Controller
 
     /**
      * Displays homepage
-     *
      * @return string
      */
     public function actionIndex()
@@ -60,40 +72,7 @@ class SiteController extends Controller
     }
 
     /**
-     * Login action
-     *
-     * @return string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Logout action
-     *
-     * @return string
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    /**
      * Displays page for sending request
-     *
      * @return string
      */
     public function actionSendRequest()
@@ -101,12 +80,55 @@ class SiteController extends Controller
         $model = new Request();
 
         if ($model->load(Yii::$app->request->post()) && $model->submit()) {
+
+            if (isset($_POST['photos'])) {
+                $model->bindPhotos($_POST['photos']);
+            }
+
             Yii::$app->session->setFlash('sendRequestFormSubmitted');
             return $this->refresh();
         }
 
-        return $this->render('send-request', [
+        return $this->render('request/send', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Uploads files and returns array of links to those files
+     * @return array
+     * @throws ServerErrorHttpException
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionUploadFiles()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $model = new UploadForm();
+        $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+
+        if ($result = $model->upload()) {
+            // files was uploaded successfully
+            return $result;
+        } else {
+            throw new ServerErrorHttpException('Не удалось загрузить фото');
+        }
+    }
+
+    /**
+     * Deletes file by url
+     * @return bool
+     * @throws ServerErrorHttpException
+     */
+    public function actionDeleteFile()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if (isset($_POST['url']) && unlink(Yii::getAlias('@webroot') . '/' . $_POST['url'])) {
+            // file was deleted successfully
+            return true;
+        } else {
+            throw new ServerErrorHttpException('Не удалось  фото');
+        }
     }
 }

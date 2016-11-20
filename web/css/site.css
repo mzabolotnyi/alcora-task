@@ -506,7 +506,7 @@ a.desc:after {
 }
 
 .card {
-    width: 70%;
+    width: 75%;
     margin: 0 auto;
 }
 
@@ -540,7 +540,7 @@ a.desc:after {
 /* INPUTS */
 .form-group .form-control,
 .form-group.has-error .form-control,
-.form-group.has-success .form-control{
+.form-group.has-success .form-control {
     padding: 10px 10px 10px 40px;
     font-size: 12px;
     height: auto;
@@ -708,4 +708,94 @@ a.desc:after {
     vertical-align: top;
     margin-top: 0;
     padding-left: 10px;
+}
+
+/* IMAGE UPLOAD */
+#input-upload {
+    display: none;
+}
+
+.btn-upload {
+    background: #fff;
+    color: #585858;
+    border: 2px solid #f78664;
+    border-radius: 2px;
+    padding: 2px 10px;
+    text-transform: uppercase;
+}
+
+.btn-upload .fa {
+    padding-right: 10px;
+}
+
+.img-preview {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    margin-left: 15px;
+    margin-top: 5px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.img-preview img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid transparent;
+}
+
+.img-preview img:hover {
+    border: 1px solid #f78664;
+}
+
+.img-preview .img-preview-delete {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    color: #f78664;
+}
+
+.img-preview .img-preview-delete:before {
+    content: "\d7";
+}
+
+.img-preview .img-preview-delete:hover {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+/* LOADER */
+#loader-upload {
+    font-size: 16px;
+    color: #f78664;
+    padding: 5px;
+}
+
+.icon-spin {
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+}
+
+@-webkit-keyframes icon-spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes icon-spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }

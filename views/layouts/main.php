@@ -41,25 +41,6 @@ AppAsset::register($this);
             ['label' => 'Подать заявку', 'url' => ['/site/send-request']],
         ],
     ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            Yii::$app->user->isGuest ? (
-                '<li>'
-                . Html::a('<span class="fa fa-sign-in"></span> Войти', Url::toRoute(['login']))
-                . '</li>'
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    '<span class="fa fa-sign-out"></span> Выйти',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
     NavBar::end();
     ?>
 
