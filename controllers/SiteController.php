@@ -124,7 +124,7 @@ class SiteController extends Controller
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        if (isset($_POST['url']) && unlink(Yii::getAlias('@webroot') . '/' . $_POST['url'])) {
+        if (isset($_POST['url']) && unlink($_SERVER['DOCUMENT_ROOT'] . '/' . $_POST['url'])) {
             // file was deleted successfully
             return true;
         } else {
