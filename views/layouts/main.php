@@ -28,7 +28,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Html::img('@web/img/logo.png', ['alt'=>Yii::$app->name]),
+        'brandLabel' => Html::img('@web/img/logo.png', ['alt' => Yii::$app->name]),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -39,6 +39,17 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Главная', 'url' => ['/site/index']],
             ['label' => 'Подать заявку', 'url' => ['/site/send-request']],
+        ],
+    ]);
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-right'],
+        'items' => [
+            '<li>'
+            . Html::a('<span class="fa fa-github fa-2x"></span>', Url::to('https://github.com/mzabolotnyi/alcora-task.git'), [
+                'target' => '_blank',
+                'class' => 'p-t-5 p-b-0',
+            ])
+            . '</li>',
         ],
     ]);
     NavBar::end();
