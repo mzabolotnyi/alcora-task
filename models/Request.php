@@ -24,6 +24,11 @@ use yii\db\ActiveRecord;
 class Request extends ActiveRecord
 {
     /**
+     * Maximum count of photos available for upload
+     */
+    const MAX_PHOTOS = 5;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -135,13 +140,17 @@ class Request extends ActiveRecord
      * Binds photo urls to request
      * @param $photos
      */
-    public function bindPhotos($photos)
+    public function bindPhotos(&$photos)
     {
-        if (!is_array($photos)){
+        if (!is_array($photos)) {
             return;
         }
 
-        foreach ($photos as $photoUrl){
+        if (count($photos) > 5) {
+            $photos = array_slice($photos, 0, self::MAX_PHOTOS);
+        }
+
+        foreach ($photos as $photoUrl) {
             $model = new RequestPhoto();
             $model->request_id = $this->id;
             $model->url = $photoUrl;
